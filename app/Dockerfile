@@ -23,4 +23,6 @@ ADD     opt /opt
 USER    www-data
 RUN     git clone https://github.com/cmehay/radio_42.git /var/www/radio42/
 
+USER    root
+
 EXPOSE  80 8080 6600
