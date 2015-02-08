@@ -15,6 +15,7 @@ ADD     init /init
 ADD     mpd.conf /etc/mpd.conf
 ADD     supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 ADD     system.pa /etc/pulse/system.pa
+ADD     daemon.conf /etc/pulse/daemon.conf
 ADD     nginx.conf /etc/nginx/sites-available/radio42
 RUN     ln -s /etc/nginx/sites-available/radio42 /etc/nginx/sites-enabled/radio42
 RUN     rm /etc/nginx/sites-enabled/default
