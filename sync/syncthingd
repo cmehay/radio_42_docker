@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# Hello, Danny. Come and play with us. Come and play with us, Danny.
+# Forever... and ever... and ever.
+while [ true ]; do
+	/srv/syncthing $@
+	sleep 1
+done
