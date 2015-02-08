@@ -2,7 +2,7 @@ FROM    debian:jessie
 
 CMD ["/usr/bin/supervisord"]
 
-ADD     apt-no-recom.conf /etc/apt/conf.d/
+ADD     02apt-no-recom /etc/apt/apt.conf.d/
 
 ENV     DEBIAN_FRONTEND noninteractive
 
@@ -15,5 +15,6 @@ ADD     init /init
 ADD     mpd.conf /etc/mpd.conf
 ADD     supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 ADD     system.pa /etc/pulse/system.pa
+
 
 EXPOSE  80 8080 6600

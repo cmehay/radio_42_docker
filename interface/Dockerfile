@@ -2,7 +2,7 @@ FROM    debian:jessie
 
 CMD     ["/usr/bin/ncmpcpp", "--host", "mpd"]
 
-ADD     apt-no-recom.conf /etc/apt/conf.d/
+ADD     02apt-no-recom /etc/apt/apt.conf.d/
 
 ENV     DEBIAN_FRONTEND noninteractive
 
