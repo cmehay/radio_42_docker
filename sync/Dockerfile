@@ -2,7 +2,7 @@
 #
 # docker build -t ptimof/syncthing .
 
-FROM ubuntu:14.04
+FROM debian:jessie
 
 MAINTAINER Peter Timofejew <peter@timofejew.com>
 
@@ -47,6 +47,4 @@ USER syncthing
 
 EXPOSE 8000 22000 21025/udp
 
-CMD ["--no-browser", "--no-restart", "--gui-address", "https://0.0.0.0:8080" , "-home=/syncthing"]
-
-ENTRYPOINT ["/srv/syncthingd"]
+CMD ["/srv/syncthingd", "--no-browser", "--no-restart", "--gui-address", "https://0.0.0.0:8000" , "-home=/syncthing"]
