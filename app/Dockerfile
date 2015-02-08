@@ -6,7 +6,7 @@ ADD     02apt-no-recom /etc/apt/apt.conf.d/
 
 ENV     DEBIAN_FRONTEND noninteractive
 
-RUN	    apt-get -y update && apt-get -y install nginx at ca-certificates bzip2 \
+RUN	    apt-get -y update && apt-get -y dist-upgrade && apt-get -y install nginx at ca-certificates bzip2 \
             emacs24-nox faad flac git htop id3v2 id3 lame libav-tools \
             mpc mpd ncmpcpp php5-cli php5-cli php5-fpm pulseaudio sox \
             supervisor swh-plugins vlc-nox vorbis-tools wget
@@ -22,6 +22,8 @@ RUN     ln -s /etc/nginx/sites-available/radio42 /etc/nginx/sites-enabled/radio4
 RUN     rm /etc/nginx/sites-enabled/default
 ADD     opt /opt
 
+RUN     mkdir -p /var/www/radio42/
+RUN     chown www-data:www-data /var/www/radio42/
 USER    www-data
 RUN     git clone https://github.com/cmehay/radio_42.git /var/www/radio42/
 
