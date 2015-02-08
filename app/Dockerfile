@@ -1,6 +1,6 @@
 FROM    debian:jessie
 
-CMD     ["/usr/bin/supervisord"]
+CMD     ["/usr/bin/supervisord", "-n"]
 
 ADD     02apt-no-recom /etc/apt/apt.conf.d/
 
