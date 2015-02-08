@@ -6,4 +6,4 @@ ADD     02apt-no-recom /etc/apt/apt.conf.d/
 
 ENV     DEBIAN_FRONTEND noninteractive
 
-RUN     apt-get -y update && apt-get -y ncmpcpp
+RUN     apt-get -y update && apt-get -y dist-upgrade && apt-get -y install ncmpcpp
