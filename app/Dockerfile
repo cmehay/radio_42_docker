@@ -1,6 +1,6 @@
 FROM    debian:jessie
 
-CMD ["/usr/bin/supervisord"]
+CMD     ["/usr/bin/supervisord"]
 
 ADD     02apt-no-recom /etc/apt/apt.conf.d/
 
@@ -15,6 +15,12 @@ ADD     init /init
 ADD     mpd.conf /etc/mpd.conf
 ADD     supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 ADD     system.pa /etc/pulse/system.pa
+ADD     nginx.conf /etc/nginx/sites-available/radio42
+RUN     ln -s /etc/nginx/sites-available/radio42 /etc/nginx/sites-enabled/radio42
+RUN     rm /etc/nginx/sites-enabled/default
+ADD     opt /opt
 
+USER    www-data
+RUN     git clone https://github.com/cmehay/radio_42.git /var/www/radio42/
 
 EXPOSE  80 8080 6600
