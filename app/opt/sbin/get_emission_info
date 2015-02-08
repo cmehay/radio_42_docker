@@ -1,0 +1,17 @@
+#!/bin/bash
+
+PATH=/home/radio/music
+
+cd $PATH
+/usr/bin/id3v2 -l $1
+42radio# cat get_radio_jobs                                          
+#!/bin/bash
+
+re='^[0-9]+$'
+if [[ ! "$1" =~ $re ]]
+   then
+	echo bad
+   exit
+fi
+
+/usr/bin/at -c $1
