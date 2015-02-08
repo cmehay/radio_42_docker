@@ -20,6 +20,8 @@ RUN     ln -s /etc/nginx/sites-available/radio42 /etc/nginx/sites-enabled/radio4
 RUN     rm /etc/nginx/sites-enabled/default
 ADD     opt /opt
 
+RUN     mkdir -p /var/www/radio42/
+RUN     chown www-data:www-data /var/www/radio42/
 USER    www-data
 RUN     git clone https://github.com/cmehay/radio_42.git /var/www/radio42/
 
