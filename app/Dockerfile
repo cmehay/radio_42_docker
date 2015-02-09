@@ -24,6 +24,7 @@ ADD     opt /opt
 
 RUN     mkdir -p /var/www/radio42/
 RUN     chown www-data:www-data /var/www/radio42/
+RUN     chown pulse:pulse /var/lib/mpd
 USER    www-data
 RUN     git clone https://github.com/cmehay/radio_42.git /var/www/radio42/
 
