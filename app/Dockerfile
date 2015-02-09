@@ -32,7 +32,6 @@ VOLUME  /music
 VOLUME  /playlist
 
 USER    root
-RUN     adduser mpd pulse
 
 RUN     adduser mpd pulse
 
