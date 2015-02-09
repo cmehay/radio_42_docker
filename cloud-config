@@ -24,7 +24,7 @@ coreos:
                 Type=oneshot
                 RemainAfterExit=yes
                 ExecStartPre=/usr/bin/docker pull goldy/radio_42_data
-                ExecStartPre=/usr/bin/docker run --name radio42_data goldy/radio_42_data
+                ExecStartPre=-/usr/bin/docker run --name radio42_data goldy/radio_42_data
                 ExecStart=/usr/bin/docker start radio42_data
 
       - name: radio42_app.service
@@ -37,9 +37,9 @@ coreos:
 
                 [Service]
                 TimeoutStartSec=0
+                ExecStartPre=/usr/bin/docker pull goldy/radio_42_app
                 ExecStartPre=-/usr/bin/docker kill radio42_app
                 ExecStartPre=-/usr/bin/docker rm radio42_app
-                ExecStartPre=/usr/bin/docker pull goldy/radio_42_app
                 ExecStart=/usr/bin/docker run --name radio42_app --volumes-from radio42_data -p 8080:8080 -e VIRTUAL_HOST=radio42.fr -e PORT=80 goldy/radio_42_app
                 ExecStop=/usr/bin/docker stop radio42_app
 
@@ -53,10 +53,10 @@ coreos:
 
                 [Service]
                 TimeoutStartSec=0
+                ExecStartPre=/usr/bin/docker pull goldy/radio_42_sync
                 ExecStartPre=-/usr/bin/docker kill radio42_sync
                 ExecStartPre=-/usr/bin/docker rm radio42_sync
-                ExecStartPre=/usr/bin/docker pull goldy/radio_42_sync
-                ExecStart=/usr/bin/docker run --name radio42_sync --volumes-from radio42_data -p 7777:8080 goldy/radio_42_sync
+                ExecStart=/usr/bin/docker run --name radio42_sync --volumes-from radio42_data -p 8000:8000 -p 22000:22000 -p 21025:21025 goldy/radio_42_sync
                 ExecStop=/usr/bin/docker stop radio42_sync
 
       - name: haproxy.service
@@ -69,8 +69,8 @@ coreos:
 
                 [Service]
                 TimeoutStartSec=0
+                ExecStartPre=/usr/bin/docker pull tutum/haproxy
                 ExecStartPre=-/usr/bin/docker kill haproxy
                 ExecStartPre=-/usr/bin/docker rm haproxy
-                ExecStartPre=/usr/bin/docker pull tutum/haproxy
                 ExecStart=/usr/bin/docker run --name haproxy --link radio42_app:radio42_app -p 80:80 tutum/haproxy
                 ExecStop=/usr/bin/docker stop haproxy
