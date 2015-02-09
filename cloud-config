@@ -1,0 +1,76 @@
+#cloud-config
+
+hostname: coreos-kidechire
+ssh_authorized_keys:
+    - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCuYErq6LtdPGyPeCCy3tP3SkydPMeBNO2BooNfBSNc/i/Dffa+YOgXSdGJBkS8w+OzQJAPssRg/2mECOSkwRkkyKpcDQ6aDRv80E4t0AiNamdozrOvFoBOjZDCTSwJNAJIAtSxOGiQ3uSswi6/LEBGkfDxuHLsoiIjv6soifrcjAa9uC4/0fkKiSiYfRinSd/Mszw8M1PxTeQqD1Kp7D0pY7SvFsMiq6Hd5Swdn2+kSLYNfSXMk1HGljVBI96RFa4WRqM/r6dzr1dMamvz1+M8meoupe41hGJjwZXDUXgtkkMa/pG2CyadnZar0/1Au1NTHA3OiVmteYNtsL2L5Bvz goldy@ecodair-ThinkPad-X200'
+write_files:
+    -
+        path: /etc/resolv.conf
+        permissions: '0644'
+        owner: root
+        content: "nameserver 62.210.16.6\nnameserver 62.210.16.7\n"
+
+coreos:
+  units:
+      - name: radio42_data.service
+        command: start
+        content: |
+                [Unit]
+                Description=Radio_42 data container
+                After=docker.service
+                Requires=docker.service
+
+                [Service]
+                Type=oneshot
+                RemainAfterExit=yes
+                ExecStartPre=/usr/bin/docker pull goldy/radio_42_data
+                ExecStartPre=/usr/bin/docker run --name radio42_data goldy/radio_42_data
+                ExecStart=/usr/bin/docker start radio42_data
+
+      - name: radio42_app.service
+        command: start
+        content: |
+                [Unit]
+                Description=Radio 42 app
+                After=radio42_data.service
+                Requires=radio42_data.service
+
+                [Service]
+                TimeoutStartSec=0
+                ExecStartPre=-/usr/bin/docker kill radio42_app
+                ExecStartPre=-/usr/bin/docker rm radio42_app
+                ExecStartPre=/usr/bin/docker pull goldy/radio_42_app
+                ExecStart=/usr/bin/docker run --name radio42_app --volumes-from radio42_data -p 8080:8080 -e VIRTUAL_HOST=radio42.fr -e PORT=80 goldy/radio_42_app
+                ExecStop=/usr/bin/docker stop radio42_app
+
+      - name: radio42_sync.service
+        command: start
+        content: |
+                [Unit]
+                Description="Radio 42 sync"
+                After=radio42_data.service
+                Requires=radio42_data.service
+
+                [Service]
+                TimeoutStartSec=0
+                ExecStartPre=-/usr/bin/docker kill radio42_sync
+                ExecStartPre=-/usr/bin/docker rm radio42_sync
+                ExecStartPre=/usr/bin/docker pull goldy/radio_42_sync
+                ExecStart=/usr/bin/docker run --name radio42_sync --volumes-from radio42_data -p 7777:8080 goldy/radio_42_sync
+                ExecStop=/usr/bin/docker stop radio42_sync
+
+      - name: haproxy.service
+        command: start
+        content: |
+                [Unit]
+                Description=haproxy
+                After=qraidcode.service, radio42_app.service
+                Requires=qraidcode.service, radio42_app.service
+
+                [Service]
+                TimeoutStartSec=0
+                ExecStartPre=-/usr/bin/docker kill haproxy
+                ExecStartPre=-/usr/bin/docker rm haproxy
+                ExecStartPre=/usr/bin/docker pull tutum/haproxy
+                ExecStart=/usr/bin/docker run --name haproxy --link radio42_app:radio42_app -p 80:80 tutum/haproxy
+                ExecStop=/usr/bin/docker stop haproxy
