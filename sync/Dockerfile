@@ -45,7 +45,7 @@ VOLUME  /syncthing
 # run as syncthing
 USER syncthing
 
-EXPOSE 8000 22000 21025/udp
+EXPOSE 8080 22000 21025/udp
 
 CMD ["--no-browser", "--no-restart", "--gui-address", "https://0.0.0.0:8080" , "-home=/syncthing"]
 
