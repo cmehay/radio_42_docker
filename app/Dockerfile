@@ -33,4 +33,6 @@ VOLUME  /playlist
 USER    root
 RUN     adduser mpd pulse
 
+RUN     adduser mpd pulse
+
 EXPOSE  80 8080 6600

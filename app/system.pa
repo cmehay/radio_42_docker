@@ -41,7 +41,7 @@ load-module module-native-protocol-unix
 ### during runtime
 ### NOTE: This should be loaded as early as possible so that subsequent modules
 ### that look up the default sink/source get the right value
-load-module module-default-device-restore
+#load-module module-default-device-restore
 
 #.ifexists module-dbus-protocol.so
 ### If you want to allow TCP connections, set access to "remote" or "local,remote".
@@ -50,10 +50,10 @@ load-module module-default-device-restore
 
 ### Automatically move streams to the default sink if the sink they are
 ### connected to dies, similar for sources
-load-module module-rescue-streams
+#load-module module-rescue-streams
 
 ### Make sure we always have a sink around, even if it is a null sink.
-load-module module-always-sink
+#load-module module-always-sink
 
 ### Automatically suspend sinks/sources that become idle for too long
 #load-module module-suspend-on-idle
