@@ -62,9 +62,9 @@ load-module module-native-protocol-unix
 #load-module module-position-event-sounds
 
 ##network
-load-module module-null-sink sink_name="rtp" format=s16be channels=2 rate=44100
+load-module module-null-sink sink_name="rtp" format=s16le channels=2 rate=44100
 #load-module module-rtp-send source="rtp.monitor" destination="37.187.81.128" port="10002"
-load-module module-rtp-send source="rtp.monitor" destination=127.0.0.1 loop=1 port="10002"
+#load-module module-rtp-send source="rtp.monitor" destination=127.0.0.1 loop=1 port="10002"
 
 ##compressor
 #load-module module-ladspa-sink master=rtp sink_name=compresseur plugin=dyson_compress_1403 label=dysonCompress control=-4,0.5,,4
