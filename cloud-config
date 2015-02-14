@@ -9,6 +9,12 @@ write_files:
         permissions: '0644'
         owner: root
         content: "nameserver 62.210.16.6\nnameserver 62.210.16.7\n"
+    -
+        path: /etc/profile.d/radio_interface.sh
+        permissions: 0644
+        content: |
+             #!/bin/sh
+             alias radio="docker run -ti --rm --link radio42_app:mpd -e LANG=C.UTF-8 goldy/radio_42_interface"
 
 coreos:
   units:
