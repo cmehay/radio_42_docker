@@ -46,7 +46,7 @@ coreos:
                 ExecStartPre=/usr/bin/docker pull goldy/radio_42_app
                 ExecStartPre=-/usr/bin/docker kill radio42_app
                 ExecStartPre=-/usr/bin/docker rm radio42_app
-                ExecStart=/usr/bin/docker run --name radio42_app --volumes-from radio42_data -p 8080:8080 -e VIRTUAL_HOST=radio42.fr -e PORT=80 goldy/radio_42_app
+                ExecStart=/usr/bin/docker run --name radio42_app --volumes-from radio42_data -p 80:80 -p 8080:8080 -e VIRTUAL_HOST=radio42.fr -e PORT=80 goldy/radio_42_app
                 ExecStop=/usr/bin/docker stop radio42_app
 
       - name: radio42_sync.service
@@ -78,21 +78,5 @@ coreos:
                 ExecStartPre=/usr/bin/docker pull goldy/radio_42_scrobbler
                 ExecStartPre=-/usr/bin/docker kill radio42_scrobbler
                 ExecStartPre=-/usr/bin/docker rm radio42_scrobbler
-                ExecStart=/usr/bin/docker run --name radio42_scrobbler --link radio42_app:mpd goldy/radio_42_scrobbler
+                ExecStart=/usr/bin/docker run --name radio42_scrobbler --volumes-from scrobbler_data --link radio42_app:mpd goldy/radio_42_scrobbler
                 ExecStop=/usr/bin/docker stop radio42_scrobbler
-
-      - name: haproxy.service
-        command: start
-        content: |
-                [Unit]
-                Description=haproxy
-                After=radio42_app.service
-                Requires=radio42_app.service
-
-                [Service]
-                TimeoutStartSec=0
-                ExecStartPre=/usr/bin/docker pull tutum/haproxy
-                ExecStartPre=-/usr/bin/docker kill haproxy
-                ExecStartPre=-/usr/bin/docker rm haproxy
-                ExecStart=/usr/bin/docker run --name haproxy --link radio42_app:radio42_app -p 80:80 tutum/haproxy
-                ExecStop=/usr/bin/docker stop haproxy

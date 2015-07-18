@@ -10,5 +10,6 @@ VOLUME  /music
 VOLUME  /playlist
 VOLUME  /syncthing
 VOLUME  /var/lib/mpd
+VOLUME  /etc/mpdscribble
 
 CMD     ["true"]
