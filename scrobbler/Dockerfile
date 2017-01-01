@@ -1,4 +1,4 @@
-FROM    debian:jessie
+FROM    debian:stretch
 
 CMD     ["/usr/bin/mpdscribble", "--host", "mpd", "--no-daemon", "--log", "-", "--conf", "/etc/mpdscribble/mpdscribble.conf"]
 

@@ -1,4 +1,4 @@
-FROM    debian:jessie
+FROM    debian:stretch
 
 CMD     ["/usr/bin/ncmpcpp", "--host", "mpd"]
 
