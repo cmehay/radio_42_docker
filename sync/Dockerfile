@@ -2,7 +2,7 @@
 #
 # docker build -t ptimof/syncthing .
 
-FROM debian:jessie
+FROM debian:stretch
 
 MAINTAINER Peter Timofejew <peter@timofejew.com>
 
@@ -19,7 +19,7 @@ RUN mkdir -p /srv && \
 
 # Version of Syncthing to retrieve
 # This is a crazy way of updating, but it is early in the dev cycle
-ENV VERSION 0.12.9
+ENV VERSION 0.14.17
 
 # get binary from official distro
 WORKDIR /tmp
