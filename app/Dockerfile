@@ -20,6 +20,7 @@ ADD     nginx.conf /etc/nginx/sites-available/radio42
 ADD     silent.ogg /silent.ogg
 RUN     ln -s /etc/nginx/sites-available/radio42 /etc/nginx/sites-enabled/radio42
 RUN     rm /etc/nginx/sites-enabled/default
+RUN     mkdir /run/php
 ADD     opt /opt
 
 RUN     mkdir -p /var/www/radio42/
